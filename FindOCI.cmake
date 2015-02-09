@@ -8,7 +8,7 @@
 
 FIND_PATH(OCI_INCLUDE_DIR oci.h
   PATHS $ENV{ORACLE_HOME}/include
-  PATH_SUFFIXES oci
+  PATH_SUFFIXES oci oracle
 )
 
 FIND_LIBRARY(OCI_LIBRARY clntsh oci
