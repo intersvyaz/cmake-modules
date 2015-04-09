@@ -12,9 +12,16 @@ FIND_LIBRARY(LIBNETSNMP_LIBRARY NAMES snmp netsnmp)
 
 MARK_AS_ADVANCED(LIBNETSNMP_LIBRARY LIBNETSNMP_INCLUDE_DIR)
 
-IF(LIBNETSNMP_INCLUDE_DIR AND EXISTS "${LIBNETSNMP_INCLUDE_DIR}/net-snmp/net-snmp-config.h")
+IF(LIBNETSNMP_INCLUDE_DIR)
+    IF(EXISTS "${LIBNETSNMP_INCLUDE_DIR}/net-snmp/net-snmp-config-x86_64.h")
+        FILE(READ "${LIBNETSNMP_INCLUDE_DIR}/net-snmp/net-snmp-config-x86_64.h" _libnetsnmp_HEADER_CONTENTS)
+    ELSEIF(EXISTS "${LIBNETSNMP_INCLUDE_DIR}/net-snmp/net-snmp-config.h")
+        FILE(READ "${LIBNETSNMP_INCLUDE_DIR}/net-snmp/net-snmp-config.h" _libnetsnmp_HEADER_CONTENTS)
+    ENDIF()
+ENDIF()
+
+IF(_libnetsnmp_HEADER_CONTENTS)
     # Read and parse net-snmp version header file for version number
-    FILE(READ "${LIBNETSNMP_INCLUDE_DIR}/net-snmp/net-snmp-config.h" _libnetsnmp_HEADER_CONTENTS)
     STRING(REGEX MATCH "PACKAGE_VERSION +\"[0-9\\.]+\"" _libnetsnmp_HEADER_CONTENTS "${_libnetsnmp_HEADER_CONTENTS}")
 
     IF(_libnetsnmp_HEADER_CONTENTS EQUAL "")
@@ -25,7 +32,11 @@ IF(LIBNETSNMP_INCLUDE_DIR AND EXISTS "${LIBNETSNMP_INCLUDE_DIR}/net-snmp/net-snm
     ELSE()
         STRING(REGEX REPLACE "PACKAGE_VERSION +\"([0-9]+).*" "\\1" LIBNETSNMP_VERSION_MAJOR "${_libnetsnmp_HEADER_CONTENTS}")
         STRING(REGEX REPLACE "PACKAGE_VERSION +\"[0-9]+\\.([0-9]+).*" "\\1" LIBNETSNMP_VERSION_MINOR "${_libnetsnmp_HEADER_CONTENTS}")
-        STRING(REGEX REPLACE "PACKAGE_VERSION +\"[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" LIBNETSNMP_VERSION_UPDATE "${_libnetsnmp_HEADER_CONTENTS}")
+        IF(_libnetsnmp_HEADER_CONTENTS MATCHES "PACKAGE_VERSION +\"[0-9]+\\.[0-9]+\\.[0-9]+.*")
+            STRING(REGEX REPLACE "PACKAGE_VERSION +\"[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" LIBNETSNMP_VERSION_UPDATE "${_libnetsnmp_HEADER_CONTENTS}")
+        ELSE()
+            SET(LIBNETSNMP_VERSION_UPDATE 0)
+        ENDIF()
         IF(_libnetsnmp_HEADER_CONTENTS MATCHES "PACKAGE_VERSION +\"[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+.*")
             STRING(REGEX REPLACE "PACKAGE_VERSION +\"[0-9]+\\.[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" LIBNETSNMP_VERSION_BUILD "${_libnetsnmp_HEADER_CONTENTS}")
         ELSE()
