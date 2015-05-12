@@ -2,9 +2,9 @@
 # Find the native libnetsnmp includes and library.
 # Once done this will define
 #
-#  LIBNETSNNMP_INCLUDE_DIRS - where to find net-snmp/net-snmp-config.h, etc.
-#  LIBNETSNNMP_LIBRARIES    - List of libraries when using libnetsnp.
-#  LIBNETSNNMP_FOUND        - True if libnetsnmp found.
+#  LIBNETSNMP_INCLUDE_DIRS - where to find net-snmp/net-snmp-config.h, etc.
+#  LIBNETSNMP_LIBRARIES    - List of libraries when using libnetsnp.
+#  LIBNETSNMP_FOUND        - True if libnetsnmp found.
 
 FIND_PATH(LIBNETSNMP_INCLUDE_DIR NAMES net-snmp/net-snmp-config.h)
 
