@@ -2,7 +2,7 @@
 # Find the native libmongoc includes and library.
 # Once done this will define
 #
-#  LIBMONGOC_INCLUDE_DIRS - where to find libmongoc.h, etc.
+#  LIBMONGOC_INCLUDE_DIRS - where to find mongoc.h, etc.
 #  LIBMONGOC_LIBRARIES    - List of libraries when using libmongoc.
 #  LIBMONGOC_FOUND        - True if libmongoc found.
 #
@@ -11,16 +11,15 @@
 #  LIBMONGOC_VERSION_MINOR  - The minor version
 #  LIBMONGOC_VERSION_MICRO  - The micro version
 
-FIND_PATH(LIBMONGOC_INCLUDE_DIR NAMES libmongoc-1.0/mongoc.h)
+FIND_PATH(LIBMONGOC_INCLUDE_DIR NAMES mongoc.h PATH_SUFFIXES libmongoc-1.0)
 FIND_LIBRARY(LIBMONGOC_LIBRARY  NAMES mongoc-1.0)
 
 MARK_AS_ADVANCED(LIBMONGOC_LIBRARY LIBMONGOC_INCLUDE_DIR)
 
-IF(LIBMONGOC_INCLUDE_DIR AND EXISTS "${LIBMONGOC_INCLUDE_DIR}/libmongoc-1.0/mongoc-version.h")
+IF(LIBMONGOC_INCLUDE_DIR AND EXISTS "${LIBMONGOC_INCLUDE_DIR}/mongoc-version.h")
     # Read and parse version header file for version number
-    file(READ "${LIBMONGOC_INCLUDE_DIR}/libmongoc-1.0/mongoc-version.h" _libmongoc_HEADER_CONTENTS)
+    file(READ "${LIBMONGOC_INCLUDE_DIR}/mongoc-version.h" _libmongoc_HEADER_CONTENTS)
     IF(_libmongoc_HEADER_CONTENTS MATCHES ".*MONGOC_MAJOR_VERSION.*")
-                                #define MONGOC_MAJOR_VERSION
         string(REGEX REPLACE ".*#define +MONGOC_MAJOR_VERSION +\\(([0-9]+)\\).*" "\\1" LIBMONGOC_VERSION_MAJOR "${_libmongoc_HEADER_CONTENTS}")
         string(REGEX REPLACE ".*#define +MONGOC_MINOR_VERSION +\\(([0-9]+)\\).*" "\\1" LIBMONGOC_VERSION_MINOR "${_libmongoc_HEADER_CONTENTS}")
         string(REGEX REPLACE ".*#define +MONGOC_MICRO_VERSION +\\(([0-9]+)\\).*" "\\1" LIBMONGOC_VERSION_MICRO "${_libmongoc_HEADER_CONTENTS}")
@@ -42,6 +41,6 @@ FIND_PACKAGE_HANDLE_STANDARD_ARGS(Libmongoc
 )
 
 IF(LIBMONGOC_FOUND)
-    SET(LIBMONGOC_INCLUDE_DIRS ${LIBMONGOC_INCLUDE_DIR}/libmongoc-1.0)
+    SET(LIBMONGOC_INCLUDE_DIRS ${LIBMONGOC_INCLUDE_DIR})
     SET(LIBMONGOC_LIBRARIES ${LIBMONGOC_LIBRARY})
 ENDIF()
