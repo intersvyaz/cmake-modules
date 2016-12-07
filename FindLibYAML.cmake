@@ -5,7 +5,6 @@
 #  LIBYAML_LIBRARIES - The libraries needed to use LibYAML
 #  LIBYAML_DEFINITIONS - Compiler switches required for using LibYAML
 #  LIBYAML_VERSION - LibYAML version
-#
 
 find_package(PkgConfig)
 pkg_check_modules(PC_LIBYAML QUIET yaml-0.1)
@@ -30,7 +29,7 @@ find_package_handle_standard_args(LibYAML
         VERSION_VAR LIBYAML_VERSION
         )
 
-mark_as_advanced(LIBYAML_INCLUDE_DIR LIBYAML_LIBRARY)
+mark_as_advanced(LIBYAML_LIBRARY LIBYAML_INCLUDE_DIR)
 
 set(LIBYAML_LIBRARIES ${LIBYAML_LIBRARY})
 set(LIBYAML_INCLUDE_DIRS ${LIBYAML_INCLUDE_DIR})
