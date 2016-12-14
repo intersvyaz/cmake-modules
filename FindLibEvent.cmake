@@ -12,12 +12,11 @@
 #  LIBEVENT_<C>_DEFINITIONS - Compiler switches required for using LibEvent component <C>
 #
 # Avaliable components:
-#  event - all-in-one bundle
+#  event
 #  event_core
 #  event_pthreads
 #  event_extra
 #  event_openssl
-#
 
 find_package(PkgConfig)
 pkg_check_modules(PC_LIBEVENT QUIET libevent)
@@ -37,7 +36,7 @@ if (LibEvent_FIND_COMPONENTS)
             set(LIBEVENT_DEFINITIONS "${LIBEVENT_DEFINITIONS} ${LIBEVENT_${comp}_DEFINITIONS}")
             list(APPEND LIBEVENT_LIBRARY ${LIBEVENT_${comp}_LIBRARY})
             mark_as_advanced(LIBEVENT_${comp}_LIBRARY)
-            set(LIBEVENT_${comp}_LIBRARIES LIBEVENT_${comp}_LIBRARY)
+            set(LIBEVENT_${comp}_LIBRARIES ${LIBEVENT_${comp}_LIBRARY})
         endif ()
     endforeach ()
 endif ()

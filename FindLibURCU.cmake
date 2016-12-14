@@ -3,6 +3,7 @@
 #
 #  LIBURCU_FOUND - System has LibURCU
 #  LIBURCU_INCLUDE_DIRS - The LibURCU include directories
+#  LIBURCU_LIBRARIES - The libraries needed to use LibURCU
 #  LIBURCU_VERSION - LibURCU version
 #
 #  LIBURCU_<C>_FOUND - System has LibURCU component <C>
@@ -32,6 +33,7 @@ if (LibURCU_FIND_COMPONENTS)
         if (LIBURCU_${comp}_LIBRARY)
             set(LibURCU_${comp}_FOUND 1)
             mark_as_advanced(LIBURCU_${comp}_LIBRARY)
+            list(APPEND LIBURCU_LIBRARY ${LIBURCU_${comp}_LIBRARY})
             set(LIBURCU_${comp}_LIBRARIES ${LIBURCU_${comp}_LIBRARY})
         endif ()
     endforeach ()
@@ -45,7 +47,7 @@ endif ()
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(LibURCU
-        REQUIRED_VARS LIBURCU_INCLUDE_DIR
+        REQUIRED_VARS LIBURCU_LIBRARY LIBURCU_INCLUDE_DIR
         VERSION_VAR LIBURCU_VERSION
         HANDLE_COMPONENTS
         )

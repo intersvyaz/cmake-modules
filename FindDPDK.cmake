@@ -14,7 +14,7 @@
 # Avaliable components:
 #  dpdk - all-in-one bundle
 #  rte_eal
-#  TODO: add other separate components
+#  TODO: add other components
 
 find_package(PkgConfig)
 pkg_check_modules(PC_DPDK QUIET dpdk)
@@ -31,6 +31,7 @@ if (DPDK_FIND_COMPONENTS)
             set(DPDK_${comp}_FOUND 1)
             list(APPEND DPDK_LIBRARY ${DPDK_${comp}_LIBRARY})
             mark_as_advanced(DPDK_${comp}_LIBRARY)
+            set(DPDK_${comp}_LIBRARIES ${DPDK_${comp}_LIBRARY})
         endif ()
     endforeach ()
 endif ()
